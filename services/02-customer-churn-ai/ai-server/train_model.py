@@ -65,7 +65,8 @@ X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
     test_size=0.2,
-    random_state=42
+    random_state=42,
+    stratify=y  # 섞일 때 비율 맞춰줘라
 )
 
 
@@ -80,7 +81,8 @@ print(y_test.shape)
 #    6. 모델 생성
 # ---------------------------------------------
 model = RandomForestClassifier(
-    random_state=42
+    random_state=42,
+    class_weight="balanced" # 비율 비슷하게
 )
 
 # ---------------------------------------------
@@ -134,3 +136,46 @@ f1 = f1_score(
     pred
 )
 print("F1 Score :", f1)
+
+# ---------------------------------------------
+#    11. 샘플 데이터 추가
+# ---------------------------------------------
+import json
+import os
+import pandas as pd
+
+os.makedirs("test_data", exist_ok=True)
+
+# 테스트할 고객 인덱스
+test_indices = [185, 2715, 3825, 1807, 132]
+
+remove_columns = [
+    "Customer ID",
+    "Customer Status",
+    "Churn Score",
+    "Churn Category",
+    "Churn Reason",
+    "Churn Label"
+]
+
+for i, idx in enumerate(test_indices, start=1):
+
+    sample = df.loc[idx].copy()
+
+    sample = sample.drop(remove_columns, errors="ignore")
+
+    # NaN -> None
+    sample = sample.where(pd.notnull(sample), "None")
+
+    filename = f"test_data/test_case_{i:02d}.json"
+
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(
+            sample.to_dict(),
+            f,
+            indent=4,
+            ensure_ascii=False,
+            sort_keys=True
+        )
+
+print("테스트 JSON 생성 완료")
