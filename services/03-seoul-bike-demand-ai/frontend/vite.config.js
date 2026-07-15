@@ -10,7 +10,7 @@ export default defineConfig({
 
     proxy: {
       "/predict": {
-        target: "http://13.125.205.14:8000",
+        target: "http://backend:8000",
         changeOrigin: true,
       },
     },
