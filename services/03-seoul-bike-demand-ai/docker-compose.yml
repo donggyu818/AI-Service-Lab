@@ -1,4 +1,4 @@
-version: "3.9"
+# version: "3.9" 이제 지원 안 된다 함.
 
 services:
   backend:
