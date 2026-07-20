@@ -29,7 +29,7 @@ app = FastAPI(
 #   - train_model.py 에서 저장한 모델 파일을 그대로 로드합니다.
 #   - 서버가 켜질 때 딱 한 번만 로드해두고, 요청마다 재사용합니다.
 # ---------------------------------------------------------------
-model = joblib.load("models/customer_churn_model.pkl")
+model = joblib.load("models/customer_churn_simple_model.pkl")
 
 
 # ---------------------------------------------------------------
